@@ -1,22 +1,45 @@
 import {ButtonType, TaskType} from './App.tsx';
 import Button from './Button.tsx';
+import {ChangeEvent, useState} from 'react';
+
 
 export type TodolistItemType = {
     title: string
     tasks: TaskType[]
     date?: string
-    deleteTaskId: (taskId: number) => void
+    deleteTaskId: (taskId: string) => void
     filteredTasks: (nameBtn: ButtonType) => void
-
+    createTask: (title: string) => void
 }
 
-const TodolistItem = ({title, tasks, date, deleteTaskId, filteredTasks}: TodolistItemType) => {
+const TodolistItem = ({title, tasks, date, deleteTaskId, filteredTasks, createTask}: TodolistItemType) => {
+
+    const [titleTask, setTitleTask] = useState('')
+
+    const onClickCreateTaskHandler = () => {
+        createTask(titleTask)
+        setTitleTask('')
+    }
+
+    const onChangeCreateTaskHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setTitleTask(e.currentTarget.value)
+    }
+
+    const onKeyDownCreateTaskHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter'){
+            onClickCreateTaskHandler()
+        }
+    }
+
     return (
         <div>
             <h3>{title}</h3>
             <div>
-                <input/>
-                <button>+</button>
+                <input value={titleTask}
+                       onChange={onChangeCreateTaskHandler}
+                       onKeyDown={onKeyDownCreateTaskHandler}
+                />
+                <Button title={'+'} onClick={onClickCreateTaskHandler}/>
             </div>
 
                 {tasks.length === 0 ? <p>Задач нет</p> :
