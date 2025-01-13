@@ -52,6 +52,18 @@ export const App  =  () => {
         return setTasks([newTask, ...tasks])
     }
 
+    const changeTaskStatus = (isDone: boolean, taskId: string) => {
+        // const task = tasks.find(el => el.id === taskId)
+        // if(task) {
+        //     task.isDone = isDone
+        //     setTasks([...tasks])
+        // }
+
+        const newTask = tasks.map(el => el.id === taskId ? {...el, isDone} : el)
+        setTasks(newTask)
+
+    }
+
   return (
       <div className="app">
       <TodolistItem title={'What to learn'}
@@ -59,7 +71,10 @@ export const App  =  () => {
                     date={'28.12.2024'}
                     deleteTaskId={deleteTaskId}
                     filteredTasks={filteredTasks}
-                    createTask = {createTask}/>
+                    createTask = {createTask}
+                    changeTaskStatus = {changeTaskStatus}
+                    filter = {filter}
+      />
       </div>
   )
 }
