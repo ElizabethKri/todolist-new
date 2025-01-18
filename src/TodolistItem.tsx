@@ -61,15 +61,15 @@ const TodolistItem = (props: TodolistItemType) => {
         onClickDeleteTodolist(id)
     }
 
-    // let currentTask = tasks
-    //
-    // if(filter === 'Active'){
-    //
-    //     currentTask = currentTask.filter(el => !el.isDone)
-    // }
-    // if(filter === 'Completed'){
-    //     currentTask = currentTask.filter(el => el.isDone)
-    // }
+    let currentTask = tasks
+
+    if(filter === 'Active'){
+
+        currentTask = currentTask.filter(el => !el.isDone)
+    }
+    if(filter === 'Completed'){
+        currentTask = currentTask.filter(el => el.isDone)
+    }
 
     return (
         <div>
@@ -88,7 +88,7 @@ const TodolistItem = (props: TodolistItemType) => {
 
             {tasks.length === 0 ? <p>Задач нет</p> :
                 <ul>
-                    {tasks.map (t => {
+                    {currentTask.map (t => {
 
                             // const onChangeCheckboxHandler = (e: ChangeEvent<HTMLInputElement>) => {
                             //     const newStatusValue = e.currentTarget.checked

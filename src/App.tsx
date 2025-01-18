@@ -45,7 +45,7 @@ export const App = () => {
         { id: todolistId2, title: 'What to buy', filter: 'All' },
     ])
 
-    const [tasks, setTasks] = useState({
+    const [tasks, setTasks] = useState<TasksState>({
         [todolistId1]: [
             { id: v1(), title: 'HTML&CSS', isDone: true },
             { id: v1(), title: 'JS', isDone: true },
@@ -95,47 +95,52 @@ export const App = () => {
         [todoListID]: tasks[todoListID].map(el => el.id === taskId ? {...el, isDone} : el)
         })
 
+        setTasks((prevState)=>({...prevState,
+        [todoListID]: prevState[todoListID].map(el => el.id === taskId ? {...el, isDone} : el)
+        }))
+
     }
 
     const onClickDeleteTodolist = (todoListID: string) => {
-        setTodolists(todolists.filter(el => el.id !== todoListID))
+        setTodolists((prevState) =>prevState.filter(el => el.id !== todoListID))
         delete tasks[todoListID]
         setTasks({...tasks})
-
     }
-
 
 
     return (
         <div className="app">
 
-            {
-                todolists.map (el => {
-                    let currentTask = tasks[el.id]
+            {/*{*/}
+            {/*    todolists.map (el => {*/}
+            {/*        let currentTask = tasks[el.id]*/}
 
-                    if(el.filter === 'Active'){
+            {/*        if(el.filter === 'Active'){*/}
 
-                        currentTask = currentTask.filter(el => !el.isDone)
-                    }
-                    if(el.filter === 'Completed'){
-                        currentTask = currentTask.filter(el => el.isDone)
-                    }
+            {/*            currentTask = currentTask.filter(el => !el.isDone)*/}
+            {/*        }*/}
+            {/*        if(el.filter === 'Completed'){*/}
+            {/*            currentTask = currentTask.filter(el => el.isDone)*/}
+            {/*        }*/}
 
-                    return <TodolistItem
-                        key = {el.id}
-                        id = {el.id}
-                        todolist={el}
-                        title={el.title}
-                        tasks={currentTask}
-                        deleteTaskId={deleteTaskId}
-                        filteredTasks={filteredTasks}
-                        createTask={createTask}
-                        changeTaskStatus={changeTaskStatus}
-                        filter={el.filter}
-                        onClickDeleteTodolist={onClickDeleteTodolist}
-                    />
-                })
-            }
+            {todolists.map(el => {
+                return  <TodolistItem
+                    key = {el.id}
+                    id = {el.id}
+                    todolist={el}
+                    title={el.title}
+                    tasks={tasks[el.id]}
+                    deleteTaskId={deleteTaskId}
+                    filteredTasks={filteredTasks}
+                    createTask={createTask}
+                    changeTaskStatus={changeTaskStatus}
+                    filter={el.filter}
+                    onClickDeleteTodolist={onClickDeleteTodolist}
+                />
+
+            })}
+
+
 
 
         </div>
