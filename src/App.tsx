@@ -76,9 +76,9 @@ export const App = () => {
     const createTask = (todoListID: string,title: string) => {
         let newTask = {id: v1 (), title, isDone: false}
         // return setTasks ([newTask, ...tasks])
-        setTasks({...tasks,
-        [todoListID]: [...tasks[todoListID], newTask]
-        })
+        setTasks((prevState) => ({...prevState,
+        [todoListID]: [...prevState[todoListID], newTask]
+        }))
     }
 
     const changeTaskStatus = (todoListID: string, isDone: boolean, taskId: string) => {
@@ -91,9 +91,9 @@ export const App = () => {
         // const newTask = tasks.map (el => el.id === taskId ? {...el, isDone} : el)
         // setTasks (newTask)
 
-        setTasks({...tasks,
-        [todoListID]: tasks[todoListID].map(el => el.id === taskId ? {...el, isDone} : el)
-        })
+        setTasks((prevState)=> ({...prevState,
+        [todoListID]: prevState[todoListID].map(el => el.id === taskId ? {...el, isDone} : el)
+        }))
 
         setTasks((prevState)=>({...prevState,
         [todoListID]: prevState[todoListID].map(el => el.id === taskId ? {...el, isDone} : el)
@@ -104,6 +104,8 @@ export const App = () => {
     const onClickDeleteTodolist = (todoListID: string) => {
         setTodolists((prevState) =>prevState.filter(el => el.id !== todoListID))
         delete tasks[todoListID]
+        setTasks({...tasks})
+
         setTasks({...tasks})
     }
 
