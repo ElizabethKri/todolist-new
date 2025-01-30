@@ -11,8 +11,8 @@ export type TodolistItemType = {
     // date?: string
     deleteTaskId: (todoListID: string,taskId: string) => void
     filteredTasks: (todoListID: string, nameBtn: ButtonType) => void
-    createTask: (todoListID: string, title: string) => void
-    changeTaskStatus: (todoListID: string, isDone: boolean, taskId: string) => void
+    createTask: (payload: {todoListID: string,title: string}) => void
+    changeTaskStatus: (payload: {todoListID: string, isDone: boolean, taskId: string}) => void
     filter: ButtonType
     onClickDeleteTodolist: (todoListID: string) => void
 }
@@ -35,12 +35,13 @@ const TodolistItem = (props: TodolistItemType) => {
     const onClickCreateTaskHandler = () => {
         const trimTitleTask = titleTask.trim ()
         if (trimTitleTask !== '') {
-            createTask (id,trimTitleTask)
+            createTask ({todoListID:id, title:trimTitleTask})
             setTitleTask ('')
         } else {
             setError ('Title is required')
         }
     }
+
 
     const onChangeCreateTaskHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setTitleTask (e.currentTarget.value)
@@ -54,7 +55,7 @@ const TodolistItem = (props: TodolistItemType) => {
     }
 
     const onChangeCheckboxHandler = (e: ChangeEvent<HTMLInputElement>, taskId: string) => {
-        changeTaskStatus(id,e.currentTarget.checked, taskId)
+        changeTaskStatus({todoListID: id,isDone: e.currentTarget.checked,taskId})
     }
 
     const onClickDeleteTodolistHandler = () => {

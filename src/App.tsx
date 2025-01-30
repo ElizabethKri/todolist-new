@@ -73,7 +73,8 @@ export const App = () => {
         // setTasks (filteredTask)
     }
 
-    const createTask = (todoListID: string,title: string) => {
+    const createTask = (payload: {todoListID: string,title: string}) => {
+        const {todoListID, title} = payload
         let newTask = {id: v1 (), title, isDone: false}
         // return setTasks ([newTask, ...tasks])
         setTasks((prevState) => ({...prevState,
@@ -81,7 +82,8 @@ export const App = () => {
         }))
     }
 
-    const changeTaskStatus = (todoListID: string, isDone: boolean, taskId: string) => {
+    const changeTaskStatus = (payload: {todoListID: string, isDone: boolean, taskId: string}) => {
+        const {todoListID, isDone, taskId} = payload
         // const task = tasks.find(el => el.id === taskId)
         // if(task) {
         //     task.isDone = isDone
