@@ -2,6 +2,7 @@ import {ButtonType, TaskType, Todolist} from './App.tsx';
 import Button from './Button.tsx';
 import {ChangeEvent} from 'react';
 import CreateItemForm from './CreateItemForm.tsx';
+import EditableSpan from './EditableSpan.tsx';
 
 
 export type TodolistItemType = {
@@ -16,6 +17,8 @@ export type TodolistItemType = {
     changeTaskStatus: (payload: {todoListID: string, isDone: boolean, taskId: string}) => void
     filter: ButtonType
     onClickDeleteTodolist: (todoListID: string) => void
+    upgradeTitleTask: (todoListID: string, taskId: string, title: string) => void
+    upgradeTitleTodolist: (todoListID: string,  title: string) => void
 }
 
 const TodolistItem = (props: TodolistItemType) => {
@@ -27,7 +30,9 @@ const TodolistItem = (props: TodolistItemType) => {
         deleteTaskId,
         filteredTasks,
         changeTaskStatus,
-        onClickDeleteTodolist
+        onClickDeleteTodolist,
+        upgradeTitleTask,
+        upgradeTitleTodolist
     } = props
 
 
@@ -44,6 +49,14 @@ const TodolistItem = (props: TodolistItemType) => {
         createTask({todoListID: id, title})
     }
 
+    const upgradeTitleItemHandler = (idItem: string, value: string) => {
+        upgradeTitleTask(id, idItem, value)
+    }
+
+    const upgradeTitleTodolistHandler = (title: string) => {
+        upgradeTitleTodolist(id, title)
+    }
+
 
     let currentTask = tasks
 
@@ -55,10 +68,11 @@ const TodolistItem = (props: TodolistItemType) => {
         currentTask = currentTask.filter(el => el.isDone)
     }
 
+
     return (
         <div>
             <Button title={'Remove todolist'} onClick={onClickDeleteTodolistHandler}/>
-            <h3>{title}</h3>
+            <h3><EditableSpan value={title} idItem={id} upgradeItemTitle={upgradeTitleTodolistHandler}/></h3>
             <div>
                 <CreateItemForm createItem = {createItem}/>
             </div>
@@ -75,7 +89,7 @@ const TodolistItem = (props: TodolistItemType) => {
                             return (
                                 <li key={t.id} className={t.isDone ? "is-done" : ''}>
                                     <input type={'checkbox'} checked={t.isDone} onChange={(event) => onChangeCheckboxHandler(event, t.id)}/>
-                                    <span>{t.title}</span>
+                                    <EditableSpan value={t.title} upgradeItemTitle ={upgradeTitleItemHandler} idItem={t.id}/>
                                     <Button title={'x'} onClick={() => deleteTaskId (id,t.id)}/>
                                 </li>
                             )
