@@ -125,6 +125,10 @@ export const App = () => {
         setTodolists(todolists.map(el => el.id === todoListID ? {...el, title} : el))
     }
 
+    const removeTasks = (todoListID: string,taskId: string,) => {
+        setTasks((prevState) => ({...prevState, [todoListID]: prevState[todoListID].filter(el => el.id === taskId)}))
+    }
+
     return (
         <div className="app">
 
@@ -157,6 +161,7 @@ export const App = () => {
                     onClickDeleteTodolist={onClickDeleteTodolist}
                     upgradeTitleTask = {upgradeTitleTask}
                     upgradeTitleTodolist = {upgradeTitleTodolist}
+                    removeTasks = {removeTasks}
                 />
 
             })}

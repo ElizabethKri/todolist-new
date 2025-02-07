@@ -34,6 +34,7 @@ const CreateItemForm = ({createItem}: CreateItemType) => {
     return (
 
         <div>
+
             <input
                 className={error ? 'error' : ''}
                 value={titleTask}

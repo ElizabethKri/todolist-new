@@ -19,6 +19,7 @@ export type TodolistItemType = {
     onClickDeleteTodolist: (todoListID: string) => void
     upgradeTitleTask: (todoListID: string, taskId: string, title: string) => void
     upgradeTitleTodolist: (todoListID: string,  title: string) => void
+    removeTasks: (todoListID: string, taskId: string) => void
 }
 
 const TodolistItem = (props: TodolistItemType) => {
@@ -32,7 +33,8 @@ const TodolistItem = (props: TodolistItemType) => {
         changeTaskStatus,
         onClickDeleteTodolist,
         upgradeTitleTask,
-        upgradeTitleTodolist
+        upgradeTitleTodolist,
+        removeTasks
     } = props
 
 
@@ -57,6 +59,11 @@ const TodolistItem = (props: TodolistItemType) => {
         upgradeTitleTodolist(id, title)
     }
 
+    const removeTaskHandler = (idItem: string,) => {
+
+        removeTasks(id, idItem)
+    }
+
 
     let currentTask = tasks
 
@@ -75,6 +82,7 @@ const TodolistItem = (props: TodolistItemType) => {
             <h3><EditableSpan value={title} idItem={id} upgradeItemTitle={upgradeTitleTodolistHandler}/></h3>
             <div>
                 <CreateItemForm createItem = {createItem}/>
+                <Button title={'Remove tasks'} onClick={() =>removeTaskHandler(id)}/>
             </div>
 
             {tasks.length === 0 ? <p>Задач нет</p> :
