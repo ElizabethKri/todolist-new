@@ -11,15 +11,15 @@ export type TodolistItemType = {
     title: string
     tasks: TaskType[]
     // date?: string
-    deleteTaskId: (todoListID: string,taskId: string) => void
-    filteredTasks: (todoListID: string, nameBtn: ButtonType) => void
+    deleteTaskId: (payload: {todoListID: string, taskId: string}) => void
+    filteredTasks: (payload: {todoListID: string,nameBtn: ButtonType}) => void
     createTask: (payload: {todoListID: string,title: string}) => void
     changeTaskStatus: (payload: {todoListID: string, isDone: boolean, taskId: string}) => void
     filter: ButtonType
     onClickDeleteTodolist: (todoListID: string) => void
-    upgradeTitleTask: (todoListID: string, taskId: string, title: string) => void
-    upgradeTitleTodolist: (todoListID: string,  title: string) => void
-    removeTasks: (todoListID: string, taskId: string) => void
+    upgradeTitleTask: (payload: {todoListID: string, taskId: string, title: string}) => void
+    upgradeTitleTodolist: (payload: {todoListID: string, title: string}) => void
+    removeTasks: (payload: {todoListID: string,taskId: string}) => void
 }
 
 const TodolistItem = (props: TodolistItemType) => {
@@ -52,16 +52,15 @@ const TodolistItem = (props: TodolistItemType) => {
     }
 
     const upgradeTitleItemHandler = (idItem: string, value: string) => {
-        upgradeTitleTask(id, idItem, value)
+        upgradeTitleTask({todoListID: id, taskId: idItem,title: value})
     }
 
     const upgradeTitleTodolistHandler = (title: string) => {
-        upgradeTitleTodolist(id, title)
+        upgradeTitleTodolist({todoListID: id, title})
     }
 
     const removeTaskHandler = (idItem: string,) => {
-
-        removeTasks(id, idItem)
+        removeTasks({todoListID:id, taskId:idItem})
     }
 
 
@@ -98,7 +97,7 @@ const TodolistItem = (props: TodolistItemType) => {
                                 <li key={t.id} className={t.isDone ? "is-done" : ''}>
                                     <input type={'checkbox'} checked={t.isDone} onChange={(event) => onChangeCheckboxHandler(event, t.id)}/>
                                     <EditableSpan value={t.title} upgradeItemTitle ={upgradeTitleItemHandler} idItem={t.id}/>
-                                    <Button title={'x'} onClick={() => deleteTaskId (id,t.id)}/>
+                                    <Button title={'x'} onClick={() => deleteTaskId ({todoListID:id,taskId:t.id})}/>
                                 </li>
                             )
                         }
@@ -106,9 +105,9 @@ const TodolistItem = (props: TodolistItemType) => {
                 </ul>
             }
             <div>
-                <Button classname={filter === 'All' ? 'active-filter' : ''} title={'All'} onClick={() => filteredTasks (id,'All')}/>
-                <Button classname={filter === 'Active' ? 'active-filter' : ''} title={'Active'} onClick={() => filteredTasks (id,'Active')}/>
-                <Button classname={filter === 'Completed' ? 'active-filter' : ''} title={'Completed'} onClick={() => filteredTasks (id,'Completed')}/>
+                <Button classname={filter === 'All' ? 'active-filter' : ''} title={'All'} onClick={() => filteredTasks ({todoListID: id,nameBtn:'All'})}/>
+                <Button classname={filter === 'Active' ? 'active-filter' : ''} title={'Active'} onClick={() => filteredTasks ({todoListID: id,nameBtn:'Active'})}/>
+                <Button classname={filter === 'Completed' ? 'active-filter' : ''} title={'Completed'} onClick={() => filteredTasks ({todoListID:id,nameBtn:'Completed'})}/>
             </div>
             {/*<div>{date}</div>*/}
         </div>

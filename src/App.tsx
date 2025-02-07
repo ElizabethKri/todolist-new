@@ -61,15 +61,17 @@ export const App = () => {
 
     // const [filter, setFilter] = useState<ButtonType>('All')
 
-    const filteredTasks = (todoListID: string,nameBtn: ButtonType) => {
+    const filteredTasks = (payload: {todoListID: string,nameBtn: ButtonType}) => {
+        const {todoListID, nameBtn} = payload
         setTodolists(todolists.map(el => el.id === todoListID ? {...el, filter: nameBtn} : el))
     }
 
 
-    const deleteTaskId = (todoListID: string, taskId: string) => {
-        setTasks({...tasks,
-        [todoListID] : tasks[todoListID].filter(el => el.id !== taskId)
-        })
+    const deleteTaskId = (payload: {todoListID: string, taskId: string}) => {
+        const {todoListID, taskId} = payload
+        setTasks((prevState)=> ({...prevState,
+        [todoListID] : prevState[todoListID].filter(el => el.id !== taskId)
+        }))
         // const filteredTask = tasks.filter (el => el.id !== taskId)
         // setTasks (filteredTask)
     }
@@ -113,19 +115,22 @@ export const App = () => {
     const createTodolist = (title: string) => {
         const todolistId = v1()
         const newTodolist: Todolist = { id: todolistId, title, filter: 'All' }
-        setTodolists([newTodolist, ...todolists])
-        setTasks({...tasks,[todolistId]: []})
+        setTodolists((prevState) => ([newTodolist, ...prevState]))
+        setTasks((prevState) => ({...prevState,[todolistId]: []}))
     }
 
-    const upgradeTitleTask = (todoListID: string, taskId: string, title: string) => {
-        setTasks({...tasks, [todoListID]: tasks[todoListID].map(el => el.id === taskId ? {...el, title} :el)})
+    const upgradeTitleTask = (payload: {todoListID: string, taskId: string, title: string}) => {
+        const {todoListID, taskId, title} = payload
+        setTasks((prevState) => ({...prevState, [todoListID]: prevState[todoListID].map(el => el.id === taskId ? {...el, title} :el)}))
     }
 
-    const upgradeTitleTodolist = (todoListID: string, title: string) => {
+    const upgradeTitleTodolist = (payload: {todoListID: string, title: string}) => {
+        const {todoListID, title} = payload
         setTodolists(todolists.map(el => el.id === todoListID ? {...el, title} : el))
     }
 
-    const removeTasks = (todoListID: string,taskId: string,) => {
+    const removeTasks = (payload: {todoListID: string,taskId: string}) => {
+        const {todoListID, taskId} = payload
         setTasks((prevState) => ({...prevState, [todoListID]: prevState[todoListID].filter(el => el.id === taskId)}))
     }
 
@@ -165,9 +170,6 @@ export const App = () => {
                 />
 
             })}
-
-
-
 
         </div>
     )
