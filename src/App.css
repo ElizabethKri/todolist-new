@@ -1,28 +1,16 @@
-.container {
-  display: flex;
-  align-items: center;
-}
+/*.container {*/
+/*  display: flex;*/
+/*  align-items: center;*/
+/*}*/
 
-.app {
-  padding: 30px;
-  display: flex;
-}
+/*.app {*/
+/*  padding: 30px;*/
+/*  display: flex;*/
+/*}*/
 
-.app > div {
-  margin-right: 50px;
-}
-
-.error {
-  border: red 1px solid;
-}
-
-.error-message {
-  color: red;
-}
-
-.active-filter {
-  background-color: lightgreen;
-}
+/*.app > div {*/
+/*  margin-right: 50px;*/
+/*}*/
 
 .is-done {
   opacity: 0.5;
