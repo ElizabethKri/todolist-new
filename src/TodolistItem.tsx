@@ -46,7 +46,7 @@ const TodolistItem = (props: TodolistItemType) => {
 
 
     const onChangeCheckboxHandler = (e: ChangeEvent<HTMLInputElement>, taskId: string) => {
-        changeTaskStatus({todoListID: id,isDone: e.currentTarget.checked,taskId})
+        changeTaskStatus({todoListID: id,isDone: e.currentTarget.checked, taskId})
     }
 
     const onClickDeleteTodolistHandler = () => {
