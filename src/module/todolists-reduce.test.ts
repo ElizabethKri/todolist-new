@@ -14,17 +14,21 @@ type TodolistType = {
 }
 type ButtonType = 'All' | 'Active' | 'Completed'
 
+let startState: TodolistType[]
+let todolistId1 = v1()
+let todolistId2 = v1()
+
+beforeEach(() => {
+        startState = [
+            {id: todolistId1, title: 'What to learn', filter: 'All'},
+            {id: todolistId2, title: 'What to buy', filter: 'All'},
+        ]
+}
+)
+
 describe ('removed', () => {
     test ('correct todolist should be removed', () => {
 
-        const todolistId1 = v1 ()
-        const todolistId2 = v1 ()
-
-        //1. начальный state
-        const startState: TodolistType[] = ([
-            {id: todolistId1, title: 'What to learn', filter: 'All'},
-            {id: todolistId2, title: 'What to buy', filter: 'All'},
-        ])
 
         //2. Действие
         // const action = {
@@ -47,13 +51,6 @@ describe ('removed', () => {
 describe ('added', () => {
     test ('correct todolist should be added', () => {
 
-        const todolistId1 = v1 ()
-        const todolistId2 = v1 ()
-
-        const startState: TodolistType[] = ([
-            {id: todolistId1, title: 'What to learn', filter: 'All'},
-            {id: todolistId2, title: 'What to buy', filter: 'All'},
-        ])
 
         // const action = {
         //     type: 'ADD-TODOLIST',
@@ -71,13 +68,6 @@ describe ('added', () => {
 
 describe('change', () => {
     test('correct todolist should change its name', () => {
-        const todolistId1 = v1 ()
-        const todolistId2 = v1 ()
-
-        const startState: TodolistType[] = ([
-            {id: todolistId1, title: 'What to learn', filter: 'All'},
-            {id: todolistId2, title: 'What to buy', filter: 'All'},
-        ])
 
         // const action = {
         //     type: 'CHANGE-TODOLIST-TITLE',
@@ -96,13 +86,6 @@ describe('change', () => {
 
 describe('filter', () => {
     test('correct filter of todolist should be changed', () => {
-        const todolistId1 = v1 ()
-        const todolistId2 = v1 ()
-
-        const startState: TodolistType[] = ([
-            {id: todolistId1, title: 'What to learn', filter: 'All'},
-            {id: todolistId2, title: 'What to buy', filter: 'All'},
-        ])
 
         // const action = {
         //     type: 'CHANGE-TODOLIST-FILTER',
