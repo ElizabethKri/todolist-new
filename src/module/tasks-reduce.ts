@@ -3,10 +3,11 @@ import {v1} from 'uuid';
 
 export const tasksReducer = (state: TasksState, action:TaskReducerActionType): TasksState => {
     switch (action.type){
-        case 'REMOVE-TASK': {
-            return ({...state,
+        case 'REMOVE-TASK':
+            return {...state,
                 [action.payload.todoListID]: state[action.payload.todoListID].filter(el => el.id !== action.payload.taskId)
-        })}
+        }
+
         case 'ADD-TASK':{
             let newTask: TaskType = {id: v1 (), title: action.payload.title, isDone: false}
             return ({...state,
@@ -38,7 +39,7 @@ export const tasksReducer = (state: TasksState, action:TaskReducerActionType): T
 
         case 'CREATE-TODOLIST-TASK': {
             return ({...state,
-                [action.payload.todoListID]: []
+                [v1()]: []
             })
         }
 
@@ -103,7 +104,7 @@ type onClickDeleteTodolistTaskACType = {
 type createTodolistTasksACType = {
     type: 'CREATE-TODOLIST-TASK',
     payload: {
-        todoListID: string
+        todolistId: string
     }
 }
 
@@ -165,11 +166,11 @@ export const onClickDeleteTodolistTasksAC = () => {
     } as const
 }
 
-export const createTodolistTasksAC = (todoListID: string) => {
+export const createTodolistTasksAC = (todolistId: string) => {
     return {
         type: 'CREATE-TODOLIST-TASK',
         payload: {
-            todoListID
+            todolistId
         }
     } as const
 }
