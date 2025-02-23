@@ -11,8 +11,7 @@ import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {CssBaseline} from '@mui/material';
 import {
     addTaskAC,
-    changeStatusTaskAC, createTodolistTasksAC,
-    onClickDeleteTodolistTasksAC,
+    changeStatusTaskAC,
     removeAllTaskAC,
     removeTaskAC,
     tasksReducer,
@@ -133,16 +132,16 @@ export const App = () => {
 
     const onClickDeleteTodolist = (todoListID: string) => {
         dispatchTodolists(removeTodolistAC(todoListID))
-        dispatchTasks(onClickDeleteTodolistTasksAC(todoListID))
+        dispatchTasks(removeTodolistAC(todoListID))
         // delete tasks[todoListID]
         // setTodolists ((prevState) => prevState.filter (el => el.id !== todoListID))
         // setTasks ({...tasks})
     }
 
     const createTodolist = (title: string) => {
-        const todolistId = v1 ()
+        debugger
         dispatchTodolists(addedTodolistAcc(title))
-        dispatchTasks(createTodolistTasksAC(todolistId))
+        dispatchTasks(addedTodolistAcc(title))
         // const newTodolist: TodolistType = {id: todolistId, title, filter: 'All'}
         //setTodolists ((prevState) => ([newTodolist, ...prevState]))
         // setTasks ((prevState) => ({...prevState, [todolistId]: []}))

@@ -62,7 +62,7 @@ describe ('added', () => {
         const endState = todolistsReducer(startState, addedTodolistAcc('New Todolist'))
 
         expect(endState.length).toBe(3)
-        expect(endState[2].title).toBe('New Todolist')
+        expect(endState[0].title).toBe('New Todolist')
     })
 })
 
