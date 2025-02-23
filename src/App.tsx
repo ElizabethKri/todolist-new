@@ -18,6 +18,13 @@ import {
     tasksReducer,
     upgradeTitleTaskAC
 } from './module/tasks-reduce.ts';
+import {
+    addedTodolistAcc,
+    changeTodolistFilterAC,
+    changeTodolistTitleAC,
+    removeTodolistAC,
+    todolistsReducer
+} from './module/todolists-reduce.ts';
 
 export type TaskType = {
     id: string
@@ -58,7 +65,7 @@ export const App = () => {
     const todolistId1 = v1 ()
     const todolistId2 = v1 ()
 
-    const [todolists, setTodolists] = useState<TodolistType[]> ([
+    const [todolists, dispatchTodolists] = useReducer(todolistsReducer,[
         {id: todolistId1, title: 'What to learn', filter: 'All'},
         {id: todolistId2, title: 'What to buy', filter: 'All'},
     ])
@@ -80,7 +87,8 @@ export const App = () => {
 
     const filteredTasks = (payload: { todoListID: string, nameBtn: ButtonType }) => {
         const {todoListID, nameBtn} = payload
-        setTodolists (todolists.map (el => el.id === todoListID ? {...el, filter: nameBtn} : el))
+        dispatchTodolists(changeTodolistFilterAC(todoListID, nameBtn))
+        // setTodolists (todolists.map (el => el.id === todoListID ? {...el, filter: nameBtn} : el))
     }
 
     const deleteTaskId = (payload: { todoListID: string, taskId: string }) => {
@@ -124,18 +132,20 @@ export const App = () => {
     }
 
     const onClickDeleteTodolist = (todoListID: string) => {
-        setTodolists ((prevState) => prevState.filter (el => el.id !== todoListID))
+        dispatchTodolists(removeTodolistAC(todoListID))
         delete tasks[todoListID]
         dispatchTasks(onClickDeleteTodolistTasksAC())
-        // setTasks ({...tasks}) todo
+        // setTodolists ((prevState) => prevState.filter (el => el.id !== todoListID))
+        // setTasks ({...tasks})
     }
 
     const createTodolist = (title: string) => {
         const todolistId = v1 ()
-        const newTodolist: TodolistType = {id: todolistId, title, filter: 'All'}
-        setTodolists ((prevState) => ([newTodolist, ...prevState]))
+        dispatchTodolists(addedTodolistAcc(title))
         dispatchTasks(createTodolistTasksAC(todolistId))
-        // setTasks ((prevState) => ({...prevState, [todolistId]: []})) todo
+        // const newTodolist: TodolistType = {id: todolistId, title, filter: 'All'}
+        //setTodolists ((prevState) => ([newTodolist, ...prevState]))
+        // setTasks ((prevState) => ({...prevState, [todolistId]: []}))
     }
 
     const upgradeTitleTask = (payload: { todoListID: string, taskId: string, title: string }) => {
@@ -149,7 +159,8 @@ export const App = () => {
 
     const upgradeTitleTodolist = (payload: { todoListID: string, title: string }) => {
         const {todoListID, title} = payload
-        setTodolists (todolists.map (el => el.id === todoListID ? {...el, title} : el))
+        dispatchTodolists(changeTodolistTitleAC(todoListID, title))
+        // setTodolists (todolists.map (el => el.id === todoListID ? {...el, title} : el))
     }
 
     const removeTasks = (payload: { todoListID: string, taskId: string }) => {

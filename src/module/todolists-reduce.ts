@@ -8,14 +8,6 @@ type TodolistType = {
 }
 type ButtonType = 'All' | 'Active' | 'Completed'
 
-const todolistId1 = v1 ()
-const todolistId2 = v1 ()
-
-const initialState: TodolistType[] = ([
-    {id: todolistId1, title: 'What to learn', filter: 'All'},
-    {id: todolistId2, title: 'What to buy', filter: 'All'},
-])
-
 type RemoveTodolistActionsType = {
     type: 'REMOVE-TODOLIST'
     payload: {
@@ -48,25 +40,24 @@ type ChangeTodolistFilterActionsType = {
 
 type ActionsType = RemoveTodolistActionsType | AddTodolistActionsType | ChangeTodolistTitleActionsType | ChangeTodolistFilterActionsType
 
-export const  todolistsReducer = (state = initialState, action: ActionsType): TodolistType[] => {
+export const  todolistsReducer = (state: TodolistType[], action: ActionsType): TodolistType[] => {
     switch (action.type){
-        case 'REMOVE-TODOLIST':{
-            return   state.filter(el => el.id !== action.payload.id)
+        case 'REMOVE-TODOLIST':
+            return   state.filter(el => el.id !== action.payload.id);
             // delete state[action.payload.id]
-        }
-        case 'ADD-TODOLIST':{
+
+        case 'ADD-TODOLIST':
             const todolistId = v1()
             const newTodolist: TodolistType = {id: todolistId, title: action.payload.title, filter: 'All'}
             return [...state, newTodolist]
-        }
-        case 'CHANGE-TODOLIST-TITLE':{
-            return state.map(el => el.id === action.payload.id ? {...el, title: action.payload.title} : el)
-        }
 
-        case 'CHANGE-TODOLIST-FILTER':{
-            const todolistId = action.payload.id
-            return state.map(el => el.id === todolistId ? {...el, filter: action.payload.filter} : el)
-        }
+        case 'CHANGE-TODOLIST-TITLE':
+            return state.map(el => el.id === action.payload.id ? {...el, title: action.payload.title} : el)
+
+
+        case 'CHANGE-TODOLIST-FILTER':
+            return state.map(el => el.id ===  action.payload.id ? {...el, filter: action.payload.filter} : el)
+
 
         default: return state
     }
