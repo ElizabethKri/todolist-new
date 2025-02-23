@@ -1,5 +1,6 @@
 import {TasksState, TaskType} from '../App.tsx';
 import {v1} from 'uuid';
+import {AddTodolistActionsType, RemoveTodolistActionsType} from './todolists-reduce.ts';
 
 export const tasksReducer = (state: TasksState, action:TaskReducerActionType): TasksState => {
     switch (action.type){
@@ -33,14 +34,16 @@ export const tasksReducer = (state: TasksState, action:TaskReducerActionType): T
             })
         }
 
-        case 'DELETE-TODOLIST-TASK':{
-            return {...state}
+        case 'ADD-TODOLIST': {
+            return ({...state,
+                [action.payload.todolistId]: []
+            })
         }
 
-        case 'CREATE-TODOLIST-TASK': {
-            return ({...state,
-                [v1()]: []
-            })
+        case 'REMOVE-TODOLIST' :{
+            const stateCopy = {...state}
+            delete stateCopy[action.payload.id]
+            return stateCopy
         }
 
         default: return state
@@ -52,8 +55,7 @@ type TaskReducerActionType = RemoveTaskACType |
     upgradeTitleTaskACType |
     changeStatusTaskACType |
     removeAllTaskACType |
-    onClickDeleteTodolistTaskACType |
-    createTodolistTasksACType
+    AddTodolistActionsType | RemoveTodolistActionsType
 
 type RemoveTaskACType = {
     type: 'REMOVE-TASK',
@@ -97,16 +99,7 @@ type removeAllTaskACType = {
     }
 }
 
-type onClickDeleteTodolistTaskACType = {
-    type: "DELETE-TODOLIST-TASK"
-}
 
-type createTodolistTasksACType = {
-    type: 'CREATE-TODOLIST-TASK',
-    payload: {
-        todolistId: string
-    }
-}
 
 export const removeTaskAC = (todoListID: string, taskId: string) => {
     return {
@@ -160,17 +153,4 @@ export const removeAllTaskAC = (todoListID: string, taskId: string) => {
     } as const
 }
 
-export const onClickDeleteTodolistTasksAC = () => {
-    return {
-        type: "DELETE-TODOLIST-TASK"
-    } as const
-}
 
-export const createTodolistTasksAC = (todolistId: string) => {
-    return {
-        type: 'CREATE-TODOLIST-TASK',
-        payload: {
-            todolistId
-        }
-    } as const
-}

@@ -3,11 +3,12 @@ import {TasksState} from '../App.tsx';
 import {
     addTaskAC,
     changeStatusTaskAC,
-    createTodolistTasksAC,
     removeTaskAC,
     tasksReducer,
     upgradeTitleTaskAC
 } from './tasks-reduce.ts';
+import {addedTodolistAcc, removeTodolistAC} from './todolists-reduce.ts';
+
 
 let startState: TasksState
 const todolistId1 = v1 ()
@@ -78,7 +79,7 @@ describe('change title', () => {
 
 describe('create Todolist added task', () => {
     test('new array should be added when new todolist is added',() => {
-        const action = createTodolistTasksAC('new todolist')
+        const action = addedTodolistAcc('new todolist')
         const endState = tasksReducer(startState, action)
 
         const keys = Object.keys(endState)
@@ -93,5 +94,16 @@ describe('create Todolist added task', () => {
     })
 })
 
+describe('delete Todolist remove task', () => {
+    test('property with todolistId should be deleted',() => {
+        const action = removeTodolistAC(todolistId2)
+        const endState = tasksReducer(startState, action)
 
+
+        const keys = Object.keys(endState)
+        expect(keys.length).toBe(1)
+        expect(endState[todolistId2]).toBeUndefined()
+
+    })
+})
 

@@ -8,17 +8,18 @@ type TodolistType = {
 }
 type ButtonType = 'All' | 'Active' | 'Completed'
 
-type RemoveTodolistActionsType = {
+export type RemoveTodolistActionsType = {
     type: 'REMOVE-TODOLIST'
     payload: {
         id: string
     }
 }
 
-type AddTodolistActionsType = {
+export type AddTodolistActionsType = {
     type: 'ADD-TODOLIST'
     payload: {
         title: string
+        todolistId: string
     }
 }
 
@@ -47,8 +48,7 @@ export const  todolistsReducer = (state: TodolistType[], action: ActionsType): T
             // delete state[action.payload.id]
 
         case 'ADD-TODOLIST':
-            const todolistId = v1()
-            const newTodolist: TodolistType = {id: todolistId, title: action.payload.title, filter: 'All'}
+            const newTodolist: TodolistType = {id: action.payload.todolistId, title: action.payload.title, filter: 'All'}
             return [...state, newTodolist]
 
         case 'CHANGE-TODOLIST-TITLE':
@@ -65,38 +65,39 @@ export const  todolistsReducer = (state: TodolistType[], action: ActionsType): T
 
 export const removeTodolistAC = (id: string) => {
     return {
-        type: 'REMOVE-TODOLIST',
+        type: 'REMOVE-TODOLIST' as const,
         payload: {
             id
         }
-    } as const
+    }
 }
 
 export const addedTodolistAcc = (title: string) => {
     return {
-        type: 'ADD-TODOLIST',
+        type: 'ADD-TODOLIST' as const,
         payload: {
-            title
+            title,
+            todolistId: v1()
         }
-    } as const
+    }
 }
 
 export const changeTodolistTitleAC = (id: string, title: string) => {
     return {
-        type: 'CHANGE-TODOLIST-TITLE',
+        type: 'CHANGE-TODOLIST-TITLE' as const,
         payload: {
             id,
             title
         }
-    } as const
+    }
 }
 
 export const changeTodolistFilterAC = (id: string, filter: ButtonType) => {
     return {
-        type: 'CHANGE-TODOLIST-FILTER',
+        type: 'CHANGE-TODOLIST-FILTER' as const,
         payload: {
             id,
             filter
         }
-    } as const
+    }
 }

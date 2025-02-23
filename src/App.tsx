@@ -133,8 +133,8 @@ export const App = () => {
 
     const onClickDeleteTodolist = (todoListID: string) => {
         dispatchTodolists(removeTodolistAC(todoListID))
-        delete tasks[todoListID]
-        dispatchTasks(onClickDeleteTodolistTasksAC())
+        dispatchTasks(onClickDeleteTodolistTasksAC(todoListID))
+        // delete tasks[todoListID]
         // setTodolists ((prevState) => prevState.filter (el => el.id !== todoListID))
         // setTasks ({...tasks})
     }
