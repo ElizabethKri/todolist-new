@@ -1,8 +1,22 @@
-import {TasksState, TaskType} from '../App.tsx';
 import {v1} from 'uuid';
-import {AddTodolistActionsType, RemoveTodolistActionsType} from './todolists-reduce.ts';
+import {AddTodolistActionsType, RemoveTodolistActionsType, todolistId1, todolistId2} from './todolists-reduce.ts';
+import {TasksState, TaskType} from '../AppWithRedux.tsx';
 
-export const tasksReducer = (state: TasksState, action:TaskReducerActionType): TasksState => {
+const initialState: TasksState = {
+    [todolistId1]: [
+        {id: v1 (), title: 'HTML&CSS', isDone: true},
+        {id: v1 (), title: 'JS', isDone: true},
+        {id: v1 (), title: 'ReactJS', isDone: false},
+    ],
+    [todolistId2]: [
+        {id: v1 (), title: 'Rest API', isDone: true},
+        {id: v1 (), title: 'GraphQL', isDone: false},
+    ],
+}
+
+
+
+export const tasksReducer = (state: TasksState = initialState, action:TaskReducerActionType): TasksState => {
     switch (action.type){
         case 'REMOVE-TASK':
             return {...state,
@@ -10,10 +24,16 @@ export const tasksReducer = (state: TasksState, action:TaskReducerActionType): T
         }
 
         case 'ADD-TASK':{
-            let newTask: TaskType = {id: v1 (), title: action.payload.title, isDone: false}
-            return ({...state,
+            let newTask: TaskType = {id: v1(), title: action.payload.title, isDone: false}
+            return {...state,
                 [action.payload.todoListID]: [...state[action.payload.todoListID], newTask]
-            })
+            }
+            // const stateCopy = {...state}
+            // const tasks = stateCopy[action.payload.todoListID]
+            // const newTask = {id: v1(),title: action.payload.title, isDone: false}
+            // const newTasks = [...tasks, newTask]
+            // stateCopy[action.payload.todoListID] = newTasks
+            // return stateCopy
         }
 
         case 'UPGRADE-TITLE-TASK':{

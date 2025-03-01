@@ -41,7 +41,15 @@ type ChangeTodolistFilterActionsType = {
 
 type ActionsType = RemoveTodolistActionsType | AddTodolistActionsType | ChangeTodolistTitleActionsType | ChangeTodolistFilterActionsType
 
-export const  todolistsReducer = (state: TodolistType[], action: ActionsType): TodolistType[] => {
+//initialState описываем, так как может возникнуть ошибка undefined
+export const todolistId1 = v1 ()
+export const todolistId2 = v1 ()
+const initialState: TodolistType[] = [
+    {id: todolistId1, title: 'What to learn', filter: 'All'},
+    {id: todolistId2, title: 'What to buy', filter: 'All'},
+]
+
+export const  todolistsReducer = (state: TodolistType[] = initialState, action: ActionsType): TodolistType[] => {
     switch (action.type){
         case 'REMOVE-TODOLIST':
             return   state.filter(el => el.id !== action.payload.id);

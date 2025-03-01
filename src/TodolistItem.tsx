@@ -1,4 +1,3 @@
-import {ButtonType, TaskType, Todolist} from './App.tsx';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import List from '@mui/material/List';
@@ -10,43 +9,47 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Box from '@mui/material/Box';
 import {filterButtonContainerSx, getListItemsSx} from './Todolist.styles.ts';
+import {useDispatch, useSelector} from 'react-redux';
+import {AppRootState} from './module/store.ts';
+import {
+    addTaskAC,
+    changeStatusTaskAC,
+    removeAllTaskAC,
+    removeTaskAC,
+    upgradeTitleTaskAC
+} from './module/tasks-reduce.ts';
+import {ButtonType, TaskType, TodolistType} from './AppWithRedux.tsx';
 
 export type TodolistItemType = {
-    todolist: Todolist
+    todolist: TodolistType
     id: string
     title: string
-    tasks: TaskType[]
-    // date?: string
-    deleteTaskId: (payload: {todoListID: string, taskId: string}) => void
     filteredTasks: (payload: {todoListID: string,nameBtn: ButtonType}) => void
-    createTask: (payload: {todoListID: string,title: string}) => void
-    changeTaskStatus: (payload: {todoListID: string, isDone: boolean, taskId: string}) => void
     filter: ButtonType
     onClickDeleteTodolist: (todoListID: string) => void
-    upgradeTitleTask: (payload: {todoListID: string, taskId: string, title: string}) => void
     upgradeTitleTodolist: (payload: {todoListID: string, title: string}) => void
-    removeTasks: (payload: {todoListID: string,taskId: string}) => void
 }
 
 const TodolistItem = (props: TodolistItemType) => {
 
     const {
         todolist: {id, title, filter},
-        tasks,
-        createTask,
-        deleteTaskId,
         filteredTasks,
-        changeTaskStatus,
         onClickDeleteTodolist,
-        upgradeTitleTask,
         upgradeTitleTodolist,
-        removeTasks
     } = props
 
+    const tasks = useSelector<AppRootState, TaskType[]>(state => state.tasks[props.id])
+    const dispatch = useDispatch()
+
+    const deleteTaskId = (payload: { todoListID: string, taskId: string }) => {
+        const {todoListID, taskId} = payload
+        dispatch(removeTaskAC(todoListID, taskId))
+    }
 
 
     const onChangeCheckboxHandler = (e: ChangeEvent<HTMLInputElement>, taskId: string) => {
-        changeTaskStatus({todoListID: id,isDone: e.currentTarget.checked, taskId})
+        dispatch(changeStatusTaskAC(id, e.currentTarget.checked, taskId))
     }
 
     const onClickDeleteTodolistHandler = () => {
@@ -54,19 +57,19 @@ const TodolistItem = (props: TodolistItemType) => {
     }
 
     const createItem = (title: string) => {
-        createTask({todoListID: id, title})
+        dispatch(addTaskAC(id,title))
     }
 
     const upgradeTitleItemHandler = (idItem: string, value: string) => {
-        upgradeTitleTask({todoListID: id, taskId: idItem,title: value})
+        dispatch(upgradeTitleTaskAC(id, idItem, value))
     }
 
     const upgradeTitleTodolistHandler = (title: string) => {
         upgradeTitleTodolist({todoListID: id, title})
     }
 
-    const removeTaskHandler = (idItem: string,) => {
-        removeTasks({todoListID:id, taskId:idItem})
+    const removesTaskHandler = (idItem: string,) => {
+        dispatch(removeAllTaskAC(id, idItem))
     }
 
 
@@ -91,16 +94,16 @@ const TodolistItem = (props: TodolistItemType) => {
             <div>
                 <CreateItemForm createItem = {createItem}/>
                 <h4 style={{padding: '0px', margin: '0px'}}> Remove tasks
-                    <IconButton  aria-label="delete" onClick={() =>removeTaskHandler(id)}>
+                    <IconButton  aria-label="delete" onClick={() =>removesTaskHandler(id)}>
                         <DeleteIcon fontSize="inherit" />
                     </IconButton>
                 </h4>
             </div>
 
 
-            {tasks.length === 0 ? <p>There are no tasks, add new tasks.</p> :
+            {tasks?.length === 0 ? <p>There are no tasks, add new tasks.</p> :
                 <List>
-                    {currentTask.map (t => {
+                    {currentTask?.map (t => {
                             return (
                                 <ListItem  key={t.id}
                                            sx={getListItemsSx(t.isDone)}>

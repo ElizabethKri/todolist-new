@@ -1,5 +1,4 @@
 import {v1} from 'uuid';
-import {TasksState} from '../App.tsx';
 import {
     addTaskAC,
     changeStatusTaskAC,
@@ -8,6 +7,7 @@ import {
     upgradeTitleTaskAC
 } from './tasks-reduce.ts';
 import {addedTodolistAcc, removeTodolistAC} from './todolists-reduce.ts';
+import {TasksState} from '../AppWithRedux.tsx';
 
 
 let startState: TasksState

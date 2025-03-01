@@ -1,6 +1,6 @@
-import {TasksState, TodolistType} from '../App.tsx';
 import {addedTodolistAcc, todolistsReducer} from './todolists-reduce.ts';
 import {tasksReducer} from './tasks-reduce.ts';
+import {TasksState, TodolistType} from '../AppWithRedux.tsx';
 
 describe('id', () => {
     test('ids should be equals', () => {

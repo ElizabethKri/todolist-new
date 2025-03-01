@@ -11,7 +11,7 @@ const CreateItemForm = ({createItem}: CreateItemType) => {
     const [error, setError] = useState<string | null> (null)
 
     const onClickCreateItemHandler = () => {
-        const trimTitleTask = titleTask.trim ()
+        const trimTitleTask = titleTask.trim()
         if (trimTitleTask !== '') {
             createItem ( trimTitleTask)
             setTitleTask ('')
