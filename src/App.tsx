@@ -139,7 +139,6 @@ export const App = () => {
     }
 
     const createTodolist = (title: string) => {
-        debugger
         dispatchTodolists(addedTodolistAcc(title))
         dispatchTasks(addedTodolistAcc(title))
         // const newTodolist: TodolistType = {id: todolistId, title, filter: 'All'}
@@ -191,9 +190,10 @@ export const App = () => {
                     <Grid container spacing={1} sx={{ml: '20px'}}>
                         <CreateItemForm createItem={createTodolist}/>
                     </Grid>
-
                     <Grid container spacing={1}>
+                        //ошибка исчезнет, если уберем initialState (используется хук useReducer)
                         {todolists.map (el => {
+                            //const todoTasks = tasks[el.id] || []
                             return (
                                 <Grid item sx={{p: '30px'}}>
                                     <Paper elevation={3} sx={{p: '15px', m: '20px'}}>
